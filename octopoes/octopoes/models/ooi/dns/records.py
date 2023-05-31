@@ -4,7 +4,7 @@ from typing import Literal, Optional
 
 from octopoes.models import OOI, Reference
 from octopoes.models.ooi.dns.zone import Hostname
-from octopoes.models.ooi.network import IPAddress, IPAddressV4, IPAddressV6
+from octopoes.models.ooi.network import IPAddress, IPAddressV4, IPAddressV6, NetBlock
 from octopoes.models.persistence import ReferenceField
 
 
@@ -143,17 +143,23 @@ class NXDOMAIN(OOI):
 class DNSPTRRecord(DNSRecord):
     object_type: Literal["DNSPTRRecord"] = "DNSPTRRecord"
     dns_record_type: Literal["PTR"] = "PTR"
-    address: Reference = ReferenceField(IPAddress)
+    address: Optional[Reference] = ReferenceField(IPAddress)
+    netblock: Optional[Reference] = ReferenceField(NetBlock)
     hostname: Optional[Reference] = ReferenceField(Hostname)
 
-    _natural_key_attrs = ["address"]
+    _natural_key_attrs = ["address","netblock"]
     _reverse_relation_names = {
-        "address": "rdns_ipaddress",
-        "hostname": "rdns_hostname",
+        "address": "rdns_address",
+        "netblock": "rdns_netblock",
+        "hostname": "rdns_ptr",
     }
 
-    @classmethod
-    def format_reference_human_readable(cls, reference: Reference):
-        ip_address = reference.tokenized.address.address
-        reverse = ".".join(reversed(ip_address.split(".")))
-        return f"{reverse}.in-addr.arpa"
+    # @classmethod
+    # def format_reference_human_readable(cls, reference: Reference) -> str:
+    #     if reference.tokenized.mask != None:
+    #         netblock = f"{reference.tokenized.start_ip.address}/{reference.tokenized.mask}"
+    #         reversed_octets = ".".join(reversed(reference.tokenized.start_ip.address.split(".")))
+    #     else:
+    #         single_ip = reference.tokenized.address.address
+    #         reversed_octets = ".".join(reversed(single_ip.split(".")))
+    #     return f"{reversed_octets}.in-addr.arpa"
