@@ -143,16 +143,10 @@ class NXDOMAIN(OOI):
 class DNSPTRRecord(DNSRecord):
     object_type: Literal["DNSPTRRecord"] = "DNSPTRRecord"
     dns_record_type: Literal["PTR"] = "PTR"
-    address: Optional[Reference] = ReferenceField(IPAddress)
-    netblock: Optional[Reference] = ReferenceField(NetBlock)
-    hostname: Optional[Reference] = ReferenceField(Hostname)
+    address: Optional[Reference] = ReferenceField(IPAddress, default=None)
+    netblock: Optional[Reference] = ReferenceField(NetBlock, default=None)
 
-    _natural_key_attrs = ["address","netblock"]
-    _reverse_relation_names = {
-        "address": "rdns_address",
-        "netblock": "rdns_netblock",
-        "hostname": "rdns_ptr",
-    }
+    _natural_key_attrs = ["value"]
 
     # @classmethod
     # def format_reference_human_readable(cls, reference: Reference) -> str:
