@@ -24,8 +24,17 @@ def get_ptr_record(ip_address):
 
 def run(boefje_meta: BoefjeMeta) -> List[Tuple[set, Union[bytes, str]]]:
     """return results to normalizer."""
-    ip_range = f"{boefje_meta.arguments['input']['start_ip']['address']}/{str(boefje_meta.arguments['input']['mask'])}"
-    results = run_rdns(ip_range)
+    try:
+        ip_range = f"{boefje_meta.arguments['input']['start_ip']['address']}/{str(boefje_meta.arguments['input']['mask'])}"
+        results = run_rdns(ip_range)
+    except KeyError:
+        try:
+            ip = boefje_meta.arguments['input']['address']
+            results = run_rdns(ip)
+        except KeyError:
+            return None
     return [(set(), json.dumps(results, default=str))]
+
+
 
 
