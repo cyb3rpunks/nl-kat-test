@@ -146,7 +146,7 @@ class DNSPTRRecord(DNSRecord):
     address: Optional[Reference] = ReferenceField(IPAddress, default=None)
     netblock: Optional[Reference] = ReferenceField(NetBlock, default=None)
 
-    _natural_key_attrs = ["value"]
+    _natural_key_attrs = ["address"]
 
     # @classmethod
     # def format_reference_human_readable(cls, reference: Reference) -> str:
