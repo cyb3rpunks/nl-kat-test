@@ -11,7 +11,7 @@ def run_rdns(cidr):
 
     for ip in network.hosts():
         ptr_value = get_ptr_record(str(ip))
-        data = {"Network": ip, "PTR": ptr_value}
+        data = {"ip": ip, "PTR": ptr_value}
         results.append(data)
     return results
 
