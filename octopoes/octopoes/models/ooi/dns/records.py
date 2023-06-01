@@ -139,13 +139,12 @@ class NXDOMAIN(OOI):
     def format_reference_human_readable(cls, reference: Reference) -> str:
         return f"NXDOMAIN response on {reference.tokenized.hostname.name}"
 
-    
 class DNSPTRRecord(DNSRecord):
     object_type: Literal["DNSPTRRecord"] = "DNSPTRRecord"
     dns_record_type: Literal["PTR"] = "PTR"
     address: Optional[Reference] = ReferenceField(IPAddress)
     hostname: Optional[Reference] = ReferenceField(Hostname)
-    reverse: Optional[str]
+    reverse: str
 
     _reverse_relation_names = {
         "hostname": "dns_ptr_records",
