@@ -13,6 +13,6 @@ def run(normalizer_meta: NormalizerMeta, raw: Union[bytes, str]) -> Iterable[OOI
     results = json.loads(raw)
     for result in results:
         value = result["PTR"]
-        network = result["Network"]
-        dnsptr_ooi = DNSPTRRecord(value=value, address=network)
+        network = result["ip"]
+        dnsptr_ooi = DNSPTRRecord(value=value, pointer_hostname=Reference(Hostname(name=value)), ip_address=Reference(IPAddress(address=network)))
         yield dnsptr_ooi
