@@ -139,21 +139,21 @@ class NXDOMAIN(OOI):
     def format_reference_human_readable(cls, reference: Reference) -> str:
         return f"NXDOMAIN response on {reference.tokenized.hostname.name}"
 
-
+    
 class DNSPTRRecord(DNSRecord):
     object_type: Literal["DNSPTRRecord"] = "DNSPTRRecord"
     dns_record_type: Literal["PTR"] = "PTR"
-    address: Optional[Reference] = ReferenceField(IPAddress)
-    netblock: Optional[Reference] = ReferenceField(NetBlock)
 
-    _natural_key_attrs = ["address"]
+    pointer_hostname: Reference = ReferenceField(Hostname)
+    ip_address: Reference = ReferenceField(IPAddress)
 
-    # @classmethod
-    # def format_reference_human_readable(cls, reference: Reference) -> str:
-    #     if reference.tokenized.mask != None:
-    #         netblock = f"{reference.tokenized.start_ip.address}/{reference.tokenized.mask}"
-    #         reversed_octets = ".".join(reversed(reference.tokenized.start_ip.address.split(".")))
-    #     else:
-    #         single_ip = reference.tokenized.address.address
-    #         reversed_octets = ".".join(reversed(single_ip.split(".")))
-    #     return f"{reversed_octets}.in-addr.arpa"
+    _reverse_relation_names = {
+        "hostname": "dns_ptr_records",
+        "pointer_hostname": "ptr_record_targets",
+        "ip_address": "ptr_record_ip"
+    }
+
+    @classmethod
+    def format_reference_human_readable(cls, reference: Reference) -> str:
+        dns_record_type = cls._get_record_type()
+        return f"{reference.tokenized.ip_address.address} {dns_record_type} {reference.tokenized.pointer_hostname.name}"
