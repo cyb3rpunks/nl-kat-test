@@ -143,8 +143,8 @@ class NXDOMAIN(OOI):
 class DNSPTRRecord(DNSRecord):
     object_type: Literal["DNSPTRRecord"] = "DNSPTRRecord"
     dns_record_type: Literal["PTR"] = "PTR"
-    address: Optional[Reference] = ReferenceField(IPAddress, default=None)
-    netblock: Optional[Reference] = ReferenceField(NetBlock, default=None)
+    address: Optional[Reference] = ReferenceField(IPAddress)
+    netblock: Optional[Reference] = ReferenceField(NetBlock)
 
     _natural_key_attrs = ["address"]
 
