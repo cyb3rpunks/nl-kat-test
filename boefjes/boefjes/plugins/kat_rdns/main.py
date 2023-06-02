@@ -11,7 +11,7 @@ def run_rdns(cidr):
 
     for ip in network.hosts():
         ptr_value = get_ptr_record(str(ip))
-        data = {"ip": ip, "PTR": ptr_value}
+        data = {"IP": ip, "PTR": ptr_value}
         results.append(data)
     return results
 
@@ -34,7 +34,4 @@ def run(boefje_meta: BoefjeMeta) -> List[Tuple[set, Union[bytes, str]]]:
         except KeyError:
             return None
     return [(set(), json.dumps(results, default=str))]
-
-
-
 
