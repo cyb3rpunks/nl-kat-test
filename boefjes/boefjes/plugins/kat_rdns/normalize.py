@@ -18,7 +18,7 @@ def run(normalizer_meta: NormalizerMeta, raw: Union[bytes, str]) -> Iterable[OOI
     results = json.loads(raw)
     for result in results:
         value = result["PTR"]
-        if value != "null":
+        if value != "None":
             ip = result["IP"]
             network = Reference(Network(name=net))
             hostname = Hostname(name=value, network=network)
