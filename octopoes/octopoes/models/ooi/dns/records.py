@@ -159,4 +159,4 @@ class DNSPTRRecord(DNSRecord):
 
     @classmethod
     def format_reference_human_readable(cls, reference: Reference) -> str:
-        return f"{reference.tokenized.reverse} > {reference.tokenized.value}"
+        return f"{reference.tokenized.reverse} -> {reference.tokenized.value}"
