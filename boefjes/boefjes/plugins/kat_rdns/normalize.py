@@ -18,16 +18,17 @@ def run(normalizer_meta: NormalizerMeta, raw: Union[bytes, str]) -> Iterable[OOI
     results = json.loads(raw)
     for result in results:
         value = result["PTR"]
-        ip = result["IP"]
-        network = Reference(Network(name=net))
-        hostname = Hostname(name=value, network=network)
-        reverse = reverse_ip(ip)
-        dnsptr_ooi = DNSPTRRecord(
-            object_type="DNSPTRRecord",
-            dns_record_type="PTR",
-            value=value,
-            hostname=Reference(hostname),
-            address=Reference(address),
-            reverse=reverse
-        )
-        yield dnsptr_ooi
+        if value != "null":
+            ip = result["IP"]
+            network = Reference(Network(name=net))
+            hostname = Hostname(name=value, network=network)
+            reverse = reverse_ip(ip)
+            dnsptr_ooi = DNSPTRRecord(
+                object_type="DNSPTRRecord",
+                dns_record_type="PTR",
+                value=value,
+                hostname=Reference(hostname),
+                address=Reference(address),
+                reverse=reverse
+            )
+            yield dnsptr_ooi
